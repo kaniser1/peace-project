@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Peace Project</title>
+    <style>
+        /* Basic styling for the login form */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="email"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0 16px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .login-container button {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .login-container button:hover {
+            background-color: #218838;
+        }
+        .message {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Login</h2>
+    <div id="message" class="message"></div>
+    <form id="loginForm">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Your username.." required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Your email.." required>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+<script>
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
+    const messageDiv = document.getElementById('message');
+
+    // Handle form submission
+    loginForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const username = usernameInput.value.trim();
+        const email = emailInput.value.trim();
+
+        // Clear previous messages
+        messageDiv.textContent = '';
+        messageDiv.className = 'message';
+
+        // Simple validation
+        if (!username || !email) {
+            messageDiv.textContent = 'Both username and email are required.';
+            messageDiv.classList.add('error');
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:8080/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, email }),
+                credentials: 'include' // Ensure cookies are included
+            });
+
+            if (response.ok) {
+                messageDiv.textContent = 'Login successful!';
+                messageDiv.classList.add('success');
+                // Redirect to the main page after successful login
+                window.location.href = '/peace-project';
+            } else {
+                const errorText = await response.text();
+                messageDiv.textContent = errorText || 'Login failed. Please try again.';
+                messageDiv.classList.add('error');
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
+            messageDiv.textContent = 'An error occurred. Please try again later.';
+            messageDiv.classList.add('error');
+        }
+    });
+
+    // Handle input changes for real-time validation or feedback
+    usernameInput.addEventListener('change', function() {
+        if (usernameInput.value.trim() === '') {
+            messageDiv.textContent = 'Username cannot be empty.';
+            messageDiv.classList.add('error');
+        } else {
+            messageDiv.textContent = '';
+            messageDiv.classList.remove('error');
+        }
+    });
+
+    emailInput.addEventListener('change', function() {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(emailInput.value.trim())) {
+            messageDiv.textContent = 'Please enter a valid email address.';
+            messageDiv.classList.add('error');
+        } else {
+            messageDiv.textContent = '';
+            messageDiv.classList.remove('error');
+        }
+    });
+</script>
+</body>
+</html>

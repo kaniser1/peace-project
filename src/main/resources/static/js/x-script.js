@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch posts from the backend
     async function fetchPosts() {
         try {
-            const response = await fetch('http://localhost:8080/api/posts', {
+            const response = await fetch('https://peace-project.fly.dev/api/posts', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -117,9 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        console.log(`http://localhost:8080/api/posts/${postId}/like`);
+        console.log(`https://peace-project.fly.dev/api/posts/${postId}/like`);
         try {
-            const response = await fetch(`http://localhost:8080/api/posts/${postId}/like`, {
+            const response = await fetch(`https://peace-project.fly.dev/api/posts/${postId}/like`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const divider = document.getElementsByClassName("divider")[0]
     const attachmentsDiv = document.getElementById("attachment-input")
 
-    const aiImageEndpoint = 'http://localhost:8080/api/posts/generateImage';
-    const submitImageEndpoint = 'http://localhost:8080/api/posts/create';
+    const aiImageEndpoint = 'https://peace-project.fly.dev/api/posts/generateImage';
+    const submitImageEndpoint = 'https://peace-project.fly.dev/api/posts/create';
 
     // Handle file input changes for toggling AI generation button
     attachmentsInput.addEventListener('change', () => {

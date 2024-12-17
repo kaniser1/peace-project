@@ -23,7 +23,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for simplicity; enable in production
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/login/**", "/css/**", "/js/**").permitAll() // Permit login endpoints
+                        .requestMatchers("/api/auth/login", "/login/**", "/css/**", "/js/**", "/x-clone/**", "/api/posts").permitAll() // Permit login endpoints
                         .anyRequest().authenticated() // Require authentication for all other requests
                 )
                 .authenticationProvider(customAuthenticationProvider) // Register custom provider
